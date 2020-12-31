@@ -1,11 +1,20 @@
-resource "aws_ecs_task_definition" "datadog" {
-  family        = "${var.env}-${var.identifier}-datadog-task"
-  task_role_arn = aws_iam_role.ecs-datadog-role.arn
+resource "aws_ecs_service" "datadog-agent-service" {
+  name            = "datadog-agent-service"
+  cluster         = var.ecs-cluster-id
+  task_definition = aws_ecs_task_definition.datadog-agent-task-definition.arn
+
+  # This allows running once for every instance
+  scheduling_strategy = "DAEMON"
+}
+
+resource "aws_ecs_task_definition" "datadog-agent-task-definition" {
+  family        = "datadog-agent-service"
+  task_role_arn = aws_iam_role.aws-dev-datadog-role.arn
 
   container_definitions = <<EOF
 [
   {
-    "name": "${var.env}-${var.identifier}",
+    "name": "datadog-agent",
     "image": "datadog/agent:latest",
     "cpu": 10,
     "memory": 256,
@@ -51,11 +60,4 @@ EOF
   }
 }
 
-resource "aws_ecs_service" "datadog" {
-  name            = "${var.env}-${var.identifier}-datadog-ecs-service"
-  cluster         = var.ecs-cluster-id
-  task_definition = aws_ecs_task_definition.datadog.arn
 
-  # This allows running once for every instance
-  scheduling_strategy = "DAEMON"
-}
