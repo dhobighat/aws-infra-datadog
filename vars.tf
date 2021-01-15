@@ -10,5 +10,5 @@ variable "datadog-extra-config" {
   default = "./init"
 }
 variable "ecs-cluster-id" {
-  default = "arn:aws:ecs:us-east-1:666519825349:cluster/aws-dev-ecs-cluster"
+  default = "arn:aws:ecs:us-east-1:666519825349:cluster/dev-ecs-cluster"
 }

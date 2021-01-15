@@ -1,19 +1,19 @@
-resource "aws_iam_role" "aws-dev-datadog-role" {
-  name = "aws-dev-datadog-role"
-  assume_role_policy = data.aws_iam_policy_document.aws-dev-datadog-policy-document-assume.json
+resource "aws_iam_role" "dev-datadog-role" {
+  name = "dev-datadog-role"
+  assume_role_policy = data.aws_iam_policy_document.dev-datadog-policy-document-assume.json
 }
 
-resource "aws_iam_policy" "aws-dev-datadog-policy" {
-  name = "aws-dev-datadog-policy"
-  policy = data.aws_iam_policy_document.aws-dev-datadog-policy-document-json.json
+resource "aws_iam_policy" "dev-datadog-policy" {
+  name = "dev-datadog-policy"
+  policy = data.aws_iam_policy_document.dev-datadog-policy-document-json.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws-dev-datadog-role-attachment" {
-  role = aws_iam_role.aws-dev-datadog-role.name
-  policy_arn = aws_iam_policy.aws-dev-datadog-policy.arn
+resource "aws_iam_role_policy_attachment" "dev-datadog-role-attachment" {
+  role = aws_iam_role.dev-datadog-role.name
+  policy_arn = aws_iam_policy.dev-datadog-policy.arn
 }
 
-data "aws_iam_policy_document" "aws-dev-datadog-policy-document-json" {
+data "aws_iam_policy_document" "dev-datadog-policy-document-json" {
   statement {
     sid = "AllowDatadogToReadECSMetrics"
     effect = "Allow"
@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "aws-dev-datadog-policy-document-json" {
   }
 }
 
-data "aws_iam_policy_document" "aws-dev-datadog-policy-document-assume" {
+data "aws_iam_policy_document" "dev-datadog-policy-document-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]

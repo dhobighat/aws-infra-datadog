@@ -2,14 +2,14 @@ resource "aws_ecs_service" "datadog-agent-service" {
   name            = "datadog-agent-service"
   cluster         = var.ecs-cluster-id
   task_definition = aws_ecs_task_definition.datadog-agent-task-definition.arn
-
+  desired_count   = 2
   # This allows running once for every instance
   scheduling_strategy = "DAEMON"
 }
 
 resource "aws_ecs_task_definition" "datadog-agent-task-definition" {
   family        = "datadog-agent-service"
-  task_role_arn = aws_iam_role.aws-dev-datadog-role.arn
+  task_role_arn = aws_iam_role.dev-datadog-role.arn
 
   container_definitions = <<EOF
 [
